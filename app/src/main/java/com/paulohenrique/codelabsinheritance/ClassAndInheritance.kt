@@ -1,5 +1,6 @@
 package com.paulohenrique.codelabsinheritance
 import kotlin.math.PI
+import kotlin.math.sqrt
 
 fun main() {
     fun printProprieties(dwelling: Dwelling) {
@@ -8,7 +9,11 @@ fun main() {
             println("Capacity: ${capacity}")
             println("Material: ${buildingMaterial}")
             println("Has room? ${hasRoom()}")
+            getRoom()
             println("Floor area: %.2f".format(floorArea()))
+            if (dwelling is RoundHut) {
+                println("Carpet Length: %.2f".format(calculateMaxCarpetLength()))
+            }
         }
     }
     val squareCabin = SquareCabin(6, 50.0)
@@ -28,6 +33,16 @@ abstract class Dwelling(private var residents: Int) {
         return residents < capacity
     }
     abstract fun floorArea(): Double
+    abstract fun calculateMaxCarpetLength(): Double
+
+    fun getRoom() {
+        if (hasRoom()) {
+            residents++
+            println("You got a room!")
+        } else {
+            println("Sorry, at capacity and no rooms left.")
+        }
+    }
 }
 
 class SquareCabin(residents: Int, val length: Double) : Dwelling(residents) {
@@ -38,6 +53,10 @@ class SquareCabin(residents: Int, val length: Double) : Dwelling(residents) {
     override fun floorArea(): Double {
         return length * length
     }
+
+    override fun calculateMaxCarpetLength(): Double {
+        TODO("Not yet implemented")
+    }
 }
 
 open class RoundHut(residents: Int, val radius: Double) : Dwelling(residents) {
@@ -47,6 +66,9 @@ open class RoundHut(residents: Int, val radius: Double) : Dwelling(residents) {
 
     override fun floorArea(): Double {
         return PI * radius * radius
+    }
+    override fun calculateMaxCarpetLength(): Double {
+        return sqrt(2.0) * radius
     }
 }
 
